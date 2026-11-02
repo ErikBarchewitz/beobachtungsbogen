@@ -488,7 +488,7 @@ function sheets(k,metaOverride){
   const head=sub=>`<div class="s-head"><div><div class="ttl">Beobachtungsbogen</div><div class="sub">${sub}</div></div><div class="sch"><b>${esc(m.schule||"")}</b>${m.schuljahr?"Schuljahr "+esc(m.schuljahr):""}</div></div>`;
   const info=`<div class="info"><div class="big"><small>Name</small><span>${esc(k.name||"")}&nbsp;</span></div><div><small>Klasse</small><span>${esc(m.klasse||"")}&nbsp;</span></div><div><small>Datum</small><span>${esc(dateDE(k.datum))}&nbsp;</span></div><div><small>Lehrkraft</small><span>${esc(m.lehrkraft||"")}&nbsp;</span></div></div>`;
   const foot=p=>`<div class="s-foot"><span>${esc(k.name||"")}${m.klasse?", Klasse "+esc(m.klasse):""}</span><span>Seite ${p} von 2</span></div>`;
-  const rows=s.cats.map(c=>`<tr class="cat" style="--c:${c.color}"><td colspan="5"><span class="sw"></span>${esc(c.name)}</td><td class="m">Ø ${fmt(c.mean)}</td></tr>
+  const rows=s.cats.map(c=>`<tr class="cat" style="--c:${c.color}"><td colspan="6"><span class="sw"></span>${esc(c.name)}</td></tr>
     ${c.items.map(it=>{ const v=k.answers[it.key]; return `<tr><td>${esc(it.text)}</td>${[1,2,3,4].map(n=>`<td class="c"><span class="dot ${v===n?"on":""}"></span></td>`).join("")}<td class="c">${v?"":'<span class="na">n. b.</span>'}</td></tr>`; }).join("")}`).join("");
   const page1=`<div class="sheet">${head("Ergebnisse der Beobachtung")}${info}
     <table class="res"><colgroup><col><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:13mm"></colgroup>
