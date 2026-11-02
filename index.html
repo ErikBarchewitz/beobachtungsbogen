@@ -110,11 +110,6 @@ main::before{content:"";position:absolute;top:0;bottom:0;left:var(--margin);widt
 
 .zettel{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 20px;margin-top:30px;box-shadow:2px 3px 0 rgba(29,58,143,.08)}
 .zettel h3{font-size:20px;margin-bottom:12px}
-.noten{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
-.noten label{display:flex;flex-direction:column;gap:3px;font-size:14px;color:var(--muted)}
-.noten input{width:96px;border:1.5px solid var(--line);border-radius:4px;padding:7px 9px;font-size:18px;font-weight:700;text-align:center;background:#fff}
-.noten .schnitt{margin-left:auto;text-align:right}
-.noten .schnitt b{display:block;font-family:var(--display);font-size:30px;color:var(--ink);line-height:1}
 .empf{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
 .tick{display:flex;align-items:center;gap:10px;border:none;background:none;font-size:19px;font-weight:700;padding:4px 0}
 .tick .bx{width:28px;height:28px;border:2px solid var(--graphite);border-radius:3px;display:flex;align-items:center;justify-content:center;background:#fff}
@@ -206,11 +201,6 @@ table.res tr.cat td.m{text-align:right;font-family:var(--text);font-size:9.4pt}
 .bar-row .vl{text-align:right;font-weight:700;font-size:10pt;font-variant-numeric:tabular-nums}
 .scale-note{font-size:7.5pt;color:var(--muted);margin-top:2.5mm}
 .sec-title{font-family:var(--display);font-weight:700;font-size:12pt;margin:0 0 2mm}
-.grades{display:grid;grid-template-columns:repeat(4,1fr) 1.1fr;border:1.2pt solid var(--graphite);border-radius:1mm;margin-bottom:6mm}
-.grades div{padding:1.8mm 3mm 2.2mm;border-right:.6pt solid var(--line)}
-.grades div:last-child{border-right:none;background:var(--ink-soft)}
-.grades small{display:block;font-size:7.5pt;color:var(--muted)}
-.grades b{font-size:15pt;font-family:var(--display);font-weight:800}
 .rec{display:flex;align-items:center;gap:8mm;border:1.6pt solid var(--ink);border-radius:1mm;padding:3.5mm 5mm;margin-bottom:6mm}
 .rec .q{font-family:var(--display);font-size:13pt;font-weight:800;flex:1;color:var(--ink)}
 .rec .opt{display:flex;align-items:center;gap:2.2mm;font-size:11.5pt;font-weight:700}
@@ -344,7 +334,6 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid=()=>Math.random().toString(36).slice(2,10);
 const fmt=n=>n==null||isNaN(n)?"–":n.toFixed(1).replace(".",",");
-const fmt2=n=>n==null||isNaN(n)?"–":n.toFixed(2).replace(".",",");
 let toastT; function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2000); }
 
 function parseCatalog(txt){
@@ -362,9 +351,8 @@ function stats(kid){
   return {cats:res,mean:all.length?all.reduce((a,b)=>a+b,0)/all.length:null,answered,total};
 }
 function level(m){ if(m==null) return "noch keine Angaben"; if(m>=3.5) return "sehr ausgeprägt"; if(m>=2.75) return "ausgeprägt"; if(m>=2) return "teilweise ausgeprägt"; return "wenig ausgeprägt"; }
-function gradeAvg(n){ const v=[n.de,n.ma,n.su,n.en].map(x=>parseFloat(String(x||"").replace(",","."))).filter(x=>!isNaN(x)); return v.length?v.reduce((a,b)=>a+b,0)/v.length:null; }
 const kid=()=>state.kids.find(k=>k.id===state.current);
-function newKid(name){ return {id:uid(),name:name||"",datum:new Date().toISOString().slice(0,10),answers:{},noten:{de:"",ma:"",su:"",en:""},empfehlung:"",bemerkung:""}; }
+function newKid(name){ return {id:uid(),name:name||"",datum:new Date().toISOString().slice(0,10),answers:{},empfehlung:"",bemerkung:""}; }
 function dateDE(d){ if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:d; }
 const sortKids=()=>state.kids.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"","de"));
 
@@ -399,8 +387,8 @@ function renderStart(m){
   const parts=both.split('<div class="sheet">').filter(Boolean).map(s=>'<div class="sheet">'+s);
   m.innerHTML=`<div class="start"><div>
     <h2>Ein Bogen pro Kind, zwei Seiten zum Ausdrucken</h2>
-    <p class="lead">Für die Übertrittsempfehlung in Klasse 4: Beobachtungen ankreuzen, Noten und Bemerkung ergänzen. Die Auswertung mit Diagramm entsteht von selbst.</p>
-    <ol><li>Kinder in die Klassenliste eintragen.</li><li>Pro Aussage eine Stufe von 1 bis 4 wählen, dazu Noten, Empfehlung und Bemerkung.</li><li>Ein Kind oder die ganze Klasse drucken, auch als PDF.</li></ol>
+    <p class="lead">Für die Übertrittsempfehlung in Klasse 4: Beobachtungen ankreuzen, Empfehlung und Bemerkung ergänzen. Die Auswertung mit Diagramm entsteht von selbst.</p>
+    <ol><li>Kinder in die Klassenliste eintragen.</li><li>Pro Aussage eine Stufe von 1 bis 4 wählen, dazu Empfehlung und Bemerkung.</li><li>Ein Kind oder die ganze Klasse drucken, auch als PDF.</li></ol>
     <div class="aktionen"><button class="btn ink" id="e-add">Erstes Kind eintragen</button><button class="btn" id="e-demo">Beispielklasse ansehen</button></div>
     <p class="privat">Nichts wird hochgeladen: Alle Eingaben bleiben im Browser auf diesem Gerät.</p></div>
     <div class="stapel" aria-hidden="true"><div class="blatt b1">${parts[0]}</div><div class="blatt b2">${parts[1]}</div></div></div>`;
@@ -421,12 +409,6 @@ function renderForm(k){
       <div class="wahl" data-key="${esc(it.key)}" role="radiogroup" aria-label="${esc(it.text)}">
       ${[1,2,3,4].map(n=>`<button class="${v===n?"sel":""}" data-v="${n}" title="${esc(sc[n-1])}" aria-pressed="${v===n}">${n}</button>`).join("")}
       <button class="nb ${v?"":"sel"}" data-v="0" title="nicht beurteilbar">n. b.</button></div></div>`; }).join("")}</div></section>`).join("")}
-  <div class="zettel"><h3>Noten</h3><div class="noten">
-    <label>Deutsch<input id="n-de" inputmode="decimal" value="${esc(k.noten.de)}"></label>
-    <label>Mathematik<input id="n-ma" inputmode="decimal" value="${esc(k.noten.ma)}"></label>
-    <label>Sachunterricht<input id="n-su" inputmode="decimal" value="${esc(k.noten.su)}"></label>
-    <label>Englisch<input id="n-en" inputmode="decimal" value="${esc(k.noten.en||"")}"></label>
-    <div class="schnitt">Durchschnitt<b id="n-avg">${fmt2(gradeAvg(k.noten))}</b></div></div></div>
   <div class="zettel"><h3>Gymnasiale Empfehlung</h3><div class="empf" id="f-emp">
     <button class="tick ${k.empfehlung==="ja"?"sel":""}" data-v="ja"><span class="bx">${CHECK}</span>Ja</button>
     <button class="tick ${k.empfehlung==="nein"?"sel":""}" data-v="nein"><span class="bx">${CHECK}</span>Nein</button>
@@ -440,7 +422,6 @@ function renderForm(k){
 
   const bind=(id,fn)=>$(id).addEventListener("input",e=>{ fn(e.target.value); save(); renderList(); });
   bind("#f-name",v=>k.name=v); bind("#f-datum",v=>k.datum=v); bind("#f-bem",v=>k.bemerkung=v);
-  ["de","ma","su","en"].forEach(f=>bind("#n-"+f,v=>{ k.noten[f]=v; $("#n-avg").textContent=fmt2(gradeAvg(k.noten)); }));
   body.querySelectorAll(".wahl").forEach(w=>w.addEventListener("click",e=>{
     const b=e.target.closest("button"); if(!b) return; const key=w.dataset.key, v=+b.dataset.v;
     if(v===0||k.answers[key]===v) delete k.answers[key]; else k.answers[key]=v;
@@ -501,8 +482,6 @@ function sheets(k,metaOverride){
     <div class="p2-top"><div class="chart-box">${chart}</div><div>
       <div class="gesamt"><b>${fmt(s.mean)}</b><span>Gesamtwert, ${level(s.mean)}<em>${s.answered} von ${s.total} Aussagen beurteilt</em></span></div>
       <div class="bars">${bars}</div><div class="scale-note">Skala 1 bis 4: 1 ${esc(sc[0])}, 4 ${esc(sc[3])}</div></div></div>
-    <div class="sec-title">Noten</div>
-    <div class="grades"><div><small>Deutsch</small><b>${esc(k.noten.de)||"–"}</b></div><div><small>Mathematik</small><b>${esc(k.noten.ma)||"–"}</b></div><div><small>Sachunterricht</small><b>${esc(k.noten.su)||"–"}</b></div><div><small>Englisch</small><b>${esc(k.noten.en)||"–"}</b></div><div><small>Durchschnitt</small><b>${fmt2(gradeAvg(k.noten))}</b></div></div>
     <div class="rec"><div class="q">Gymnasiale Empfehlung</div><div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
     <div class="sec-title">Bemerkung</div><div class="remark">${esc(k.bemerkung)}</div>
     ${foot(2)}</div>`;
@@ -512,13 +491,13 @@ function sheets(k,metaOverride){
 /* ---------- Beispielklasse ---------- */
 function makeDemo(){
   const cats=parseCatalog(state.catalog);
-  const mk=(name,profile,noten,emp,bem)=>{ const k=newKid(name); let i=0;
+  const mk=(name,profile,emp,bem)=>{ const k=newKid(name); let i=0;
     cats.forEach((c,ci)=>c.items.forEach(it=>{ const v=profile[ci%profile.length][i++%3]; if(v) k.answers[it.key]=v; }));
-    Object.assign(k,{noten,empfehlung:emp,bemerkung:bem}); return k; };
+    Object.assign(k,{empfehlung:emp,bemerkung:bem}); return k; };
   return [
-    mk("Mia Schneider",[[4,4,3],[4,3,4],[3,4,4],[4,3,3],[4,4,3],[3,3,4]],{de:"2",ma:"1",su:"2",en:"1"},"ja","Mia arbeitet sehr zuverlässig und selbstständig. Sie erfasst neue Inhalte schnell und bringt sich mit durchdachten Beiträgen ein. Bei umfangreichen Aufgaben braucht sie gelegentlich Ermutigung, dranzubleiben."),
-    mk("Jonas Weber",[[3,2,3],[2,3,0],[3,2,2],[2,2,3],[4,3,4],[2,2,1]],{de:"3",ma:"2",su:"3",en:"3"},"nein","Jonas ist ein hilfsbereiter Mitschüler und im Sozialverhalten ein Vorbild. Beim selbstständigen Arbeiten und bei der Organisation seiner Materialien braucht er noch Unterstützung. Seine Leistungen in Mathematik sind erfreulich."),
-    mk("Lea Yilmaz",[[3,3,4],[4,4,4],[4,3,4],[3,3,3],[3,4,3],[3,4,3]],{de:"2",ma:"2",su:"2",en:"2"},"","")
+    mk("Mia Schneider",[[4,4,3],[4,3,4],[3,4,4],[4,3,3],[4,4,3],[3,3,4]],"ja","Mia arbeitet sehr zuverlässig und selbstständig. Sie erfasst neue Inhalte schnell und bringt sich mit durchdachten Beiträgen ein. Bei umfangreichen Aufgaben braucht sie gelegentlich Ermutigung, dranzubleiben."),
+    mk("Jonas Weber",[[3,2,3],[2,3,0],[3,2,2],[2,2,3],[4,3,4],[2,2,1]],"nein","Jonas ist ein hilfsbereiter Mitschüler und im Sozialverhalten ein Vorbild. Beim selbstständigen Arbeiten und bei der Organisation seiner Materialien braucht er noch Unterstützung. Seine Leistungen in Mathematik sind erfreulich."),
+    mk("Lea Yilmaz",[[3,3,4],[4,4,4],[4,3,4],[3,3,3],[3,4,3],[3,4,3]],"","")
   ];
 }
 function loadDemo(){
