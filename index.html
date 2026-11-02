@@ -504,7 +504,7 @@ function sheets(k,metaOverride){
     <div class="grades"><div><small>Deutsch</small><b>${esc(k.noten.de)||"–"}</b></div><div><small>Mathematik</small><b>${esc(k.noten.ma)||"–"}</b></div><div><small>Sachunterricht / HSU</small><b>${esc(k.noten.su)||"–"}</b></div><div><small>Durchschnitt</small><b>${fmt2(gradeAvg(k.noten))}</b></div></div>
     <div class="rec"><div class="q">Gymnasiale Empfehlung</div><div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
     <div class="sec-title">Bemerkung</div><div class="remark">${esc(k.bemerkung)}</div>
-    <div class="sign"><div>Ort, Datum</div><div>Unterschrift Lehrkraft</div><div>Unterschrift Erziehungsberechtigte</div></div>${foot(2)}</div>`;
+    ${foot(2)}</div>`;
   return page1+page2;
 }
 
