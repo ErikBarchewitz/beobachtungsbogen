@@ -111,11 +111,15 @@ main::before{content:"";position:absolute;top:0;bottom:0;left:var(--margin);widt
 .zettel{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px 20px;margin-top:30px;box-shadow:2px 3px 0 rgba(29,58,143,.08)}
 .zettel h3{font-size:20px;margin-bottom:12px}
 .empf{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-.foerder{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px 18px;margin-bottom:14px}
-.foerder .tick{font-size:16px;font-weight:400;text-align:left}
-.foerder .tick .bx{width:24px;height:24px;flex:none}
-.foerder .tick .bx svg{width:19px;height:19px}
-.foerder .tick.sel{font-weight:700}
+.fs-list{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.fs-item{width:100%;padding:3px 0 3px 10px;border-left:4px solid transparent}
+.fs-item.on{border-left-color:var(--c);background:#f7f9fc}
+.fs-item .tick{font-size:16px;font-weight:400;text-align:left}
+.fs-item .tick .bx{width:24px;height:24px;flex:none}
+.fs-item .tick .bx svg{width:19px;height:19px}
+.fs-item .tick.sel{font-weight:700}
+.fs-item .pc{font-weight:400;color:var(--muted);font-size:14px;margin-left:4px}
+.fs-item p{margin:0 0 6px 38px;font-size:14px;color:var(--muted);max-width:70ch}
 .zettel textarea.kurz{min-height:92px}
 .zettel .sub{font-size:14px;color:var(--muted);margin:0 0 4px}
 .tick{display:flex;align-items:center;gap:10px;border:none;background:none;font-size:19px;font-weight:700;padding:4px 0}
@@ -167,13 +171,13 @@ textarea:focus,input:focus{outline:2px solid var(--ink-soft);border-color:var(--
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* ---------- A4-Blätter ---------- */
-.sheet{width:210mm;height:297mm;background:#fff;padding:14mm 15mm 11mm;position:relative;overflow:hidden;color:var(--graphite);font-family:var(--text);font-size:9.6pt;line-height:1.3;display:flex;flex-direction:column}
+.sheet{width:210mm;height:297mm;background:#fff;padding:12mm 15mm 9mm;position:relative;overflow:hidden;color:var(--graphite);font-family:var(--text);font-size:9.6pt;line-height:1.3;display:flex;flex-direction:column}
 .s-head{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:3mm;margin-bottom:4mm;border-bottom:1.6pt solid var(--ink)}
 .s-head .ttl{font-family:var(--display);font-size:21pt;font-weight:800;line-height:1;color:var(--ink);letter-spacing:-.01em}
 .s-head .sub{font-size:10pt;color:var(--muted);margin-top:1.2mm}
 .s-head .sch{text-align:right;font-size:9pt;color:var(--muted)}
 .s-head .sch b{display:block;color:var(--graphite);font-size:10.5pt}
-.info{display:grid;grid-template-columns:2.3fr .8fr 1fr 1.4fr;border:1.2pt solid var(--graphite);border-radius:1mm;margin-bottom:4.5mm}
+.info{display:grid;grid-template-columns:2.3fr .8fr 1fr 1.4fr;border:1.2pt solid var(--graphite);border-radius:1mm;margin-bottom:3.5mm}
 .info div{padding:1.6mm 3mm 2mm;border-right:.6pt solid var(--line)}
 .info div:last-child{border-right:none}
 .info small{display:block;font-size:7.5pt;color:var(--muted)}
@@ -183,45 +187,49 @@ textarea:focus,input:focus{outline:2px solid var(--ink-soft);border-color:var(--
 table.res{width:100%;border-collapse:collapse;table-layout:fixed}
 table.res th{font-size:7.4pt;font-weight:400;color:var(--muted);text-align:center;padding:0 .5mm 1.2mm;vertical-align:bottom;line-height:1.15}
 table.res th.q{text-align:left}
-table.res td{padding:1.1mm 1.5mm;border-bottom:.5pt solid #e3e9ef;vertical-align:middle}
+table.res td{padding:.38mm 1.5mm;border-bottom:.5pt solid #e3e9ef;vertical-align:middle;font-size:8.5pt;line-height:1.15;height:4.3mm}
 table.res td.c{text-align:center;padding:0}
-table.res tr.cat td{border-bottom:.9pt solid var(--c);padding:2.4mm 1.5mm .9mm 0;font-family:var(--display);font-weight:700;font-size:10.4pt}
+table.res tr.cat td{border-bottom:.9pt solid var(--c);padding:1.5mm 1.5mm .5mm 0;font-family:var(--display);font-weight:700;font-size:9.8pt;height:auto}
 table.res tr.cat td .sw{display:inline-block;width:2.4mm;height:3.2mm;background:var(--c);border-radius:.4mm;margin-right:2mm;vertical-align:-.3mm}
 table.res tr.cat td.m{text-align:right;font-family:var(--text);font-size:9.4pt}
-.dot{display:inline-block;width:3.5mm;height:3.5mm;border-radius:50%;border:.8pt solid #aebccd;vertical-align:middle}
+.dot{display:inline-block;width:3mm;height:3mm;border-radius:50%;border:.8pt solid #aebccd;vertical-align:middle}
 .dot.on{background:var(--ink);border-color:var(--ink)}
 .na{font-size:7.5pt;color:var(--muted);font-style:italic}
 .s-foot{margin-top:auto;padding-top:2.5mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted)}
 
-.p2-top{display:grid;grid-template-columns:92mm 1fr;gap:7mm;align-items:start;margin-bottom:6mm}
+.p2-top{display:grid;grid-template-columns:88mm 1fr;gap:6mm;align-items:start;margin-bottom:4mm}
 .chart-box svg{width:100%;height:auto;display:block}
-.gesamt{display:flex;align-items:baseline;gap:3mm;margin:1mm 0 4mm;padding-bottom:3mm;border-bottom:.6pt solid var(--line)}
+.gesamt{display:flex;align-items:baseline;gap:3mm;margin:0 0 3mm;padding-bottom:2.5mm;border-bottom:.6pt solid var(--line)}
 .gesamt b{font-family:var(--display);font-size:30pt;font-weight:800;color:var(--ink);line-height:1}
 .gesamt span{font-size:10pt}
 .gesamt span em{display:block;font-style:normal;color:var(--muted);font-size:8.5pt}
-.bars{display:flex;flex-direction:column;gap:2.4mm}
-.bar-row{display:grid;grid-template-columns:1fr 9mm;gap:2mm;align-items:end}
-.bar-row .lb{font-size:8.8pt;font-weight:700;margin-bottom:.8mm}
+.bars{display:flex;flex-direction:column;gap:1.5mm}
+.bar-row{display:grid;grid-template-columns:1fr 13mm;gap:2mm;align-items:end}
+.bar-row .lb{font-size:8.6pt;font-weight:700;margin-bottom:.5mm}
+.bar-row .lb span{font-weight:400;color:var(--muted);font-size:7.8pt}
 .bar-row .tr{height:3mm;background:#eef2f6;border-radius:.6mm;position:relative;overflow:hidden}
 .bar-row .tr::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(25% - .5pt),#fff calc(25% - .5pt),#fff 25%)}
 .bar-row .fl{position:absolute;left:0;top:0;bottom:0;background:var(--c)}
-.bar-row .vl{text-align:right;font-weight:700;font-size:10pt;font-variant-numeric:tabular-nums}
+.bar-row .vl{text-align:right;font-weight:700;font-size:10pt;white-space:nowrap;font-variant-numeric:tabular-nums}
 .scale-note{font-size:7.5pt;color:var(--muted);margin-top:2.5mm}
 .sec-title{font-family:var(--display);font-weight:700;font-size:12pt;margin:0 0 2mm}
-.fs{margin-bottom:6mm}
-.fs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6mm 6mm;border:1.2pt solid var(--graphite);border-radius:1mm;padding:3mm 4mm}
-.fs-grid .opt{display:flex;align-items:center;gap:2.2mm;font-size:9.8pt}
-.fs-grid .opt.on{font-weight:700}
-.fs-grid .box{width:4.4mm;height:4.4mm}
-.fs-grid .box svg{width:4mm;height:4mm}
-.fs-note{grid-column:1/-1;border-top:.6pt solid var(--line);margin-top:1mm;padding-top:2mm;font-size:9.6pt;white-space:pre-wrap}
+.fs{margin-bottom:5mm}
+.fs-grid{display:flex;flex-direction:column;gap:1.8mm}
+.fs-row{display:grid;grid-template-columns:38mm 1fr;gap:3mm;border-left:1.6mm solid var(--c);padding:.6mm 0 .6mm 2.5mm;font-size:9.4pt}
+.fs-row b{font-weight:700}
+.se{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-bottom:5mm}
+.chip{display:inline-block;border:.8pt solid var(--c);border-left:2mm solid var(--c);border-radius:.8mm;padding:.6mm 2mm;margin:0 1.5mm 1.5mm 0;font-size:9pt}
+.chip b{font-weight:700;margin-left:1mm}
+.leer{font-size:8.8pt;color:var(--muted);font-style:italic}
+.hinweis{font-size:7.3pt;color:var(--muted);margin-top:2mm}
+.fs-note{border-top:.6pt solid var(--line);margin-top:.5mm;padding-top:1.6mm;font-size:9.4pt;white-space:pre-wrap}
 .fs-note small{display:block;font-size:7.5pt;color:var(--muted)}
-.rec{display:flex;align-items:center;gap:8mm;border:1.6pt solid var(--ink);border-radius:1mm;padding:3.5mm 5mm;margin-bottom:6mm}
+.rec{display:flex;align-items:center;gap:8mm;border:1.6pt solid var(--ink);border-radius:1mm;padding:2.8mm 5mm;margin-bottom:5mm}
 .rec .q{font-family:var(--display);font-size:13pt;font-weight:800;flex:1;color:var(--ink)}
 .rec .opt{display:flex;align-items:center;gap:2.2mm;font-size:11.5pt;font-weight:700}
 .box{width:5.4mm;height:5.4mm;border:1.3pt solid var(--graphite);border-radius:.6mm;display:inline-flex;align-items:center;justify-content:center}
 .box svg{width:5mm;height:5mm}
-.remark{flex:1;min-height:38mm;white-space:pre-wrap;font-size:10.2pt;line-height:7.5mm;padding:0 1mm;
+.remark{flex:1;min-height:22mm;white-space:pre-wrap;font-size:10.2pt;line-height:7.5mm;padding:0 1mm;
   background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 7.2mm,#d3dde7 7.2mm,#d3dde7 7.5mm)}
 .sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8mm;margin-top:10mm}
 .sign div{border-top:.8pt solid var(--graphite);padding-top:1.2mm;font-size:7.5pt;color:var(--muted)}
@@ -290,7 +298,6 @@ table.res tr.cat td.m{text-align:right;font-family:var(--text);font-size:9.4pt}
     </div>
     <p>Fragebogen: Eine Zeile mit <b>#</b> am Anfang beginnt einen neuen Bereich, jede andere Zeile ist eine Aussage. Antworten bleiben erhalten, solange der Text einer Aussage gleich bleibt.</p>
     <textarea id="m-catalog" spellcheck="false"></textarea>
-    <label style="margin-top:12px">Förderschwerpunkte, einer pro Zeile<textarea id="m-foerder" spellcheck="false" style="min-height:150px"></textarea></label>
     <label style="margin-top:12px">Bewertungsstufen 1 bis 4, durch | getrennt<input id="m-scale"></label>
     <div class="aktionen">
       <button class="btn quiet" id="m-reset">Standard wiederherstellen</button>
@@ -306,51 +313,71 @@ table.res tr.cat td.m{text-align:right;font-family:var(--text);font-size:9.4pt}
 (function(){
 const KEY = "beobachtungsbogen-auswertung-v1";
 const DEFAULT_CATALOG = `# Arbeitsverhalten
-Arbeitet konzentriert und ausdauernd
-Arbeitet selbstständig ohne ständige Hilfe
-Erledigt Aufgaben sorgfältig und genau
-Arbeitet in angemessenem Tempo
-Erledigt Hausaufgaben vollständig und zuverlässig
-# Lern- und Leistungsbereitschaft
-Zeigt Interesse und Neugier an neuen Inhalten
-Beteiligt sich aktiv am Unterricht
-Gibt auch bei Schwierigkeiten nicht auf
-Nimmt Hinweise an und setzt sie um
-# Auffassung und Denken
-Erfasst neue Inhalte schnell
-Denkt logisch und kann abstrahieren
-Überträgt Gelerntes auf neue Aufgaben
-Erkennt Zusammenhänge und begründet Lösungen
-# Sprache und Ausdruck
-Drückt sich mündlich klar und zusammenhängend aus
-Verfügt über einen differenzierten Wortschatz
-Liest sinnentnehmend und versteht Texte
-Verfasst Texte strukturiert und verständlich
+Beginnt das Kind nach einer Arbeitsanweisung zeitnah mit der Aufgabe?
+Bearbeitet es Aufgaben sorgfältig und ordentlich?
+Hält es vereinbarte Arbeitsregeln ein?
+Führt es begonnene Aufgaben zu Ende?
+Geht es verantwortungsvoll mit Arbeitsmaterialien um?
+# Konzentration
+Kann sich das Kind über einen angemessenen Zeitraum einer Aufgabe widmen?
+Lässt es sich durch äußere Reize wenig ablenken?
+Kann es nach einer Ablenkung zur Aufgabe zurückfinden?
+Hört es bei Erklärungen aufmerksam zu?
+Kann es mehrere aufeinanderfolgende Arbeitsschritte im Blick behalten?
+# Selbstständigkeit
+Versteht und befolgt das Kind Arbeitsaufträge selbstständig?
+Holt es benötigte Materialien eigenständig?
+Findet es bei Schwierigkeiten zunächst eigene Lösungswege?
+Kontrolliert es seine Arbeitsergebnisse selbst?
+Kann es seinen Arbeitsplatz und seine Materialien organisieren?
 # Sozialverhalten
-Hält Regeln und Absprachen ein
-Arbeitet kooperativ mit anderen zusammen
-Geht respektvoll und hilfsbereit mit anderen um
-# Selbstorganisation
-Hält Arbeitsmaterial vollständig und in Ordnung
-Plant Arbeitsschritte und teilt sich die Zeit ein
-Übernimmt Verantwortung für das eigene Lernen`;
-const DEFAULT_FOERDER = `Lernen
-Sprache
-Emotionale und soziale Entwicklung
-Geistige Entwicklung
-Körperliche und motorische Entwicklung
-Hören
-Sehen
-Autismus`;
-const DEFAULT_SCALE = ["trifft nicht zu","trifft eher nicht zu","trifft eher zu","trifft voll zu"];
+Geht das Kind respektvoll mit anderen Kindern um?
+Hält es gemeinsame Regeln und Absprachen ein?
+Kann es mit anderen Kindern kooperativ zusammenarbeiten?
+Zeigt es Rücksichtnahme und Hilfsbereitschaft?
+Akzeptiert es unterschiedliche Meinungen und Bedürfnisse?
+# Konfliktfähigkeit
+Kann das Kind eigene Bedürfnisse angemessen äußern?
+Hört es sich bei Meinungsverschiedenheiten andere Sichtweisen an?
+Kann es Konflikte zunehmend sprachlich lösen?
+Ist es bereit, Kompromisse einzugehen?
+Kann es nach einem Konflikt wieder konstruktiv auf andere zugehen?
+# Mitarbeit
+Beteiligt sich das Kind aktiv am Unterricht?
+Meldet es sich mit eigenen Beiträgen?
+Bringt es passende Ideen und Gedanken ein?
+Hört es den Beiträgen anderer aufmerksam zu?
+Beteiligt es sich auch an gemeinsamen Unterrichtsgesprächen?
+# Lernverhalten
+Kann das Kind neue Lerninhalte mit bereits Bekanntem verknüpfen?
+Wendet es erlernte Strategien und Methoden an?
+Geht es mit Fehlern konstruktiv um?
+Kann es Rückmeldungen für die Verbesserung seiner Arbeit nutzen?
+Zeigt es Ausdauer bei herausfordernden Lernaufgaben?
+# Motivation
+Zeigt das Kind Interesse an neuen Lerninhalten?
+Geht es neugierig an neue Aufgaben heran?
+Ist es bereit, sich auf unbekannte Herausforderungen einzulassen?
+Zeigt es Freude an eigenen Lernfortschritten?
+Arbeitet es auch bei weniger beliebten Aufgaben mit?`;
+const FOERDER_TEXT = {
+  "Arbeitsverhalten":"Arbeitsaufträge kurz und klar formulieren, Arbeitsschritte sichtbar machen und das Fertigstellen von Aufgaben gezielt anerkennen.",
+  "Konzentration":"Kurze, klar strukturierte Arbeitsphasen mit regelmäßigen Rückmeldungen und vereinbarten Ruhephasen anbieten.",
+  "Selbstständigkeit":"Checklisten und Material zur Selbstkontrolle bereitstellen und vor einer Hilfe zuerst einen eigenen Lösungsversuch ermutigen.",
+  "Sozialverhalten":"Kooperative Lernformen mit klaren Rollen nutzen sowie Regeln gemeinsam vereinbaren und regelmäßig besprechen.",
+  "Konfliktfähigkeit":"Gesprächsstrategien und Ich-Botschaften einüben sowie gemeinsam nach fairen Lösungen suchen.",
+  "Mitarbeit":"Beiträge in Partnerarbeit vorbereiten lassen, Beteiligung ermutigen und eigene Ideen ausdrücklich wertschätzen.",
+  "Lernverhalten":"Lernstrategien gezielt einüben, Fehler als Lernchance besprechen und Rückmeldungen konkret und umsetzbar formulieren.",
+  "Motivation":"Interessen des Kindes aufgreifen, Wahlmöglichkeiten anbieten und Lernfortschritte sichtbar machen."
+};
+const DEFAULT_SCALE = ["Selten – benötigt noch viel Unterstützung","Gelegentlich","Häufig","Zuverlässig / selbstständig"];
 /* Heftumschlag-Farben, eine pro Bereich */
 const HEFT = ["#2563c4","#d8402f","#2a8f53","#d9a400","#e46f1f","#7d4bb8","#1a8f99","#c23d7a"];
 const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6" fill="none" stroke="#1d3a8f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-let state = load() || {meta:{schule:"",schuljahr:"",klasse:"",lehrkraft:""},catalog:DEFAULT_CATALOG,scale:DEFAULT_SCALE.slice(),kids:[],current:null,tab:"form"};
+let state = load() || {meta:{schule:"",schuljahr:"",klasse:"",lehrkraft:""},catalog:DEFAULT_CATALOG,scale:DEFAULT_SCALE.slice(),v:2,kids:[],current:null,tab:"form"};
 if(!state.scale || state.scale.length!==4) state.scale = DEFAULT_SCALE.slice();
-if(typeof state.foerder!=="string") state.foerder = DEFAULT_FOERDER;
-const foerderList=()=>state.foerder.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+if(state.v!==2){ state.catalog=DEFAULT_CATALOG; state.scale=DEFAULT_SCALE.slice(); state.v=2; delete state.foerder; }
 if(!state.meta) state.meta={};
 
 function load(){ try{ const s=localStorage.getItem(KEY); return s?JSON.parse(s):null; }catch(e){ return null; } }
@@ -373,10 +400,17 @@ function stats(kid){
   const cats=parseCatalog(state.catalog); let all=[],answered=0,total=0;
   const res=cats.map(c=>{ const v=c.items.map(i=>kid.answers[i.key]).filter(x=>x>=1&&x<=4);
     total+=c.items.length; answered+=v.length; all=all.concat(v);
-    return {name:c.name,color:c.color,items:c.items,mean:v.length?v.reduce((a,b)=>a+b,0)/v.length:null}; });
-  return {cats:res,mean:all.length?all.reduce((a,b)=>a+b,0)/all.length:null,answered,total};
+    const mean=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;
+    return {name:c.name,color:c.color,items:c.items,mean,pct:pct(mean)}; });
+  const ps=res.filter(c=>c.pct!=null).map(c=>c.pct);
+  return {cats:res,pct:ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):null,answered,total};
 }
-function level(m){ if(m==null) return "noch keine Angaben"; if(m>=3.5) return "sehr ausgeprägt"; if(m>=2.75) return "ausgeprägt"; if(m>=2) return "teilweise ausgeprägt"; return "wenig ausgeprägt"; }
+const pct=m=>m==null?null:Math.round((m-1)/3*100);
+const fmtP=p=>p==null?"–":p+" %";
+const shortScale=t=>String(t).split(/\s[–-]\s|\s\/\s/)[0];
+function profile(k){ const s=stats(k); const done=s.cats.filter(c=>c.pct!=null);
+  return { s, staerken:done.filter(c=>c.pct>=67).sort((a,b)=>b.pct-a.pct), entwicklung:done.filter(c=>c.pct<50).sort((a,b)=>a.pct-b.pct) }; }
+function foerderOf(k){ const p=profile(k); return Array.isArray(k.fs)? p.s.cats.filter(c=>k.fs.includes(c.name)) : p.entwicklung.slice(0,3); }
 const kid=()=>state.kids.find(k=>k.id===state.current);
 function newKid(name){ return {id:uid(),name:name||"",datum:new Date().toISOString().slice(0,10),answers:{},empfehlung:"",bemerkung:""}; }
 function dateDE(d){ if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:d; }
@@ -391,7 +425,7 @@ function renderList(){
   const ul=$("#kid-list");
   ul.innerHTML=sortKids().map(k=>{ const s=stats(k);
     const g=k.empfehlung==="ja"?'<span class="gym ja">Gym</span>':k.empfehlung==="nein"?'<span class="gym nein">kein Gym</span>':"";
-    return `<li data-id="${k.id}" class="${k.id===state.current?"active":""}" tabindex="0"><span class="nm">${esc(k.name||"Ohne Namen")}</span>${g}<span class="count" title="beurteilte Aussagen">${s.answered}/${s.total}</span></li>`;
+    return `<li data-id="${k.id}" class="${k.id===state.current?"active":""}" tabindex="0"><span class="nm">${esc(k.name||"Ohne Namen")}</span>${g}<span class="count" title="beantwortete Fragen">${s.answered}/${s.total}</span></li>`;
   }).join("")||`<li class="none">Noch niemand eingetragen</li>`;
   ul.querySelectorAll("li[data-id]").forEach(li=>{ const go=()=>{ state.current=li.dataset.id; save(); renderAll(); };
     li.onclick=go; li.onkeydown=e=>{ if(e.key==="Enter") go(); }; });
@@ -413,8 +447,8 @@ function renderStart(m){
   const parts=both.split('<div class="sheet">').filter(Boolean).map(s=>'<div class="sheet">'+s);
   m.innerHTML=`<div class="start"><div>
     <h2>Ein Bogen pro Kind, zwei Seiten zum Ausdrucken</h2>
-    <p class="lead">Für die Übertrittsempfehlung in Klasse 4: Beobachtungen ankreuzen, Empfehlung und Bemerkung ergänzen. Die Auswertung mit Diagramm entsteht von selbst.</p>
-    <ol><li>Kinder in die Klassenliste eintragen.</li><li>Pro Aussage eine Stufe von 1 bis 4 wählen, dazu Empfehlung und Bemerkung.</li><li>Ein Kind oder die ganze Klasse drucken, auch als PDF.</li></ol>
+    <p class="lead">Für Elterngespräch und Übertrittsempfehlung: 40 Beobachtungsfragen in acht Bereichen ankreuzen. Diagramm, Stärken, Entwicklungsbereiche und Förderschwerpunkte entstehen von selbst.</p>
+    <ol><li>Kinder in die Klassenliste eintragen.</li><li>Pro Frage eine Stufe von 1 bis 4 wählen, dazu Empfehlung und Bemerkung.</li><li>Ein Kind oder die ganze Klasse drucken, auch als PDF.</li></ol>
     <div class="aktionen"><button class="btn ink" id="e-add">Erstes Kind eintragen</button><button class="btn" id="e-demo">Beispielklasse ansehen</button></div>
     <p class="privat">Nichts wird hochgeladen: Alle Eingaben bleiben im Browser auf diesem Gerät.</p></div>
     <div class="stapel" aria-hidden="true"><div class="blatt b1">${parts[0]}</div><div class="blatt b2">${parts[1]}</div></div></div>`;
@@ -425,24 +459,25 @@ function renderForm(k){
   const s=stats(k), sc=state.scale, body=$("#tab-body");
   body.innerHTML=`
   <div class="kid-head">
-    <input class="name" id="f-name" value="${esc(k.name)}" placeholder="Name des Kindes" aria-label="Name des Kindes">
+    <input class="name" id="f-name" value="${esc(k.name)}" placeholder="Vorname oder Kürzel" aria-label="Vorname oder Kürzel">
     <label>Datum<input type="date" id="f-datum" value="${esc(k.datum)}"></label>
   </div>
-  <div class="scale-key">${sc.map((t,i)=>`<span><b>${i+1}</b> ${esc(t)}</span>`).join("")}<span><b>n. b.</b> nicht beurteilbar</span></div>
+  <div class="scale-key">${sc.map((t,i)=>`<span><b>${i+1}</b> ${esc(t)}</span>`).join("")}<span><b>n. b.</b> nicht beobachtet</span></div>
   ${s.cats.map(c=>`<section class="bereich" style="--c:${c.color}">
-    <div class="bereich-kopf"><i style="background:${c.color}"></i><h3>${esc(c.name)}</h3><span class="avg">Ø ${fmt(c.mean)}</span></div>
+    <div class="bereich-kopf"><i style="background:${c.color}"></i><h3>${esc(c.name)}</h3><span class="avg">${fmtP(c.pct)}</span></div>
     <div class="fragen">${c.items.map(it=>{ const v=k.answers[it.key]; return `<div class="frage"><div>${esc(it.text)}</div>
       <div class="wahl" data-key="${esc(it.key)}" role="radiogroup" aria-label="${esc(it.text)}">
       ${[1,2,3,4].map(n=>`<button class="${v===n?"sel":""}" data-v="${n}" title="${esc(sc[n-1])}" aria-pressed="${v===n}">${n}</button>`).join("")}
-      <button class="nb ${v?"":"sel"}" data-v="0" title="nicht beurteilbar">n. b.</button></div></div>`; }).join("")}</div></section>`).join("")}
+      <button class="nb ${v?"":"sel"}" data-v="0" title="nicht beobachtet">n. b.</button></div></div>`; }).join("")}</div></section>`).join("")}
   <div class="zettel"><h3>Gymnasiale Empfehlung</h3><div class="empf" id="f-emp">
     <button class="tick ${k.empfehlung==="ja"?"sel":""}" data-v="ja"><span class="bx">${CHECK}</span>Ja</button>
     <button class="tick ${k.empfehlung==="nein"?"sel":""}" data-v="nein"><span class="bx">${CHECK}</span>Nein</button>
     <button class="btn quiet" data-v="">Auswahl entfernen</button></div></div>
   <div class="zettel"><h3>Förderschwerpunkte</h3>
-    <div class="foerder" id="f-fs">${foerderList().map(f=>`<button class="tick ${(k.foerder||[]).includes(f)?"sel":""}" data-v="${esc(f)}" aria-pressed="${(k.foerder||[]).includes(f)}"><span class="bx">${CHECK}</span>${esc(f)}</button>`).join("")}</div>
-    <p class="sub">Hinweise zur Förderung (optional)</p>
-    <textarea class="kurz" id="f-fsn" placeholder="z. B. Art der Unterstützung, Nachteilsausgleich, bisherige Maßnahmen">${esc(k.foerderText||"")}</textarea></div>
+    <p class="sub" id="fs-info"></p>
+    <div class="fs-list" id="f-fs"></div>
+    <p class="sub" style="margin-top:14px">Weitere Hinweise zur Förderung (optional)</p>
+    <textarea class="kurz" id="f-fsn" placeholder="z. B. vereinbarte Ziele, bisherige Maßnahmen, Unterstützung zu Hause">${esc(k.foerderText||"")}</textarea></div>
   <div class="zettel"><h3>Bemerkung</h3>
     <textarea id="f-bem" placeholder="Stärken, Entwicklungsfelder, Hinweise für die weiterführende Schule">${esc(k.bemerkung)}</textarea></div>
   <div class="aktionen">
@@ -457,11 +492,13 @@ function renderForm(k){
     if(v===0||k.answers[key]===v) delete k.answers[key]; else k.answers[key]=v;
     w.querySelectorAll("button").forEach(x=>{ const xv=+x.dataset.v, on=xv===0?!k.answers[key]:xv===k.answers[key]; x.classList.toggle("sel",on); if(xv) x.setAttribute("aria-pressed",on); });
     const cs=stats(k).cats.find(c=>c.items.some(i=>i.key===key));
-    w.closest(".bereich").querySelector(".avg").textContent="Ø "+fmt(cs.mean); save(); renderList(); }));
+    w.closest(".bereich").querySelector(".avg").textContent=fmtP(cs.pct); save(); renderList(); if(!Array.isArray(k.fs)) renderFS(k); }));
   bind("#f-fsn",v=>k.foerderText=v);
-  $("#f-fs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const v=b.dataset.v; k.foerder=k.foerder||[];
-    k.foerder=k.foerder.includes(v)?k.foerder.filter(x=>x!==v):k.foerder.concat(v);
-    const on=k.foerder.includes(v); b.classList.toggle("sel",on); b.setAttribute("aria-pressed",on); save(); });
+  renderFS(k);
+  $("#f-fs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.auto){ k.fs=null; renderFS(k); save(); return; }
+    const v=b.dataset.v; const cur=foerderOf(k).map(c=>c.name);
+    k.fs=cur.includes(v)?cur.filter(x=>x!==v):cur.concat(v); renderFS(k); save(); });
   $("#f-emp").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; k.empfehlung=b.dataset.v;
     $("#f-emp").querySelectorAll(".tick").forEach(x=>x.classList.toggle("sel",x.dataset.v===k.empfehlung)); save(); renderList(); });
   $("#f-preview").onclick=()=>{ state.tab="preview"; save(); renderMain(); window.scrollTo(0,0); };
@@ -471,15 +508,23 @@ function renderForm(k){
     const nm=k.name||"Kind"; state.kids=state.kids.filter(x=>x.id!==k.id); state.current=sortKids()[0]?.id||null; save(); renderAll(); toast(nm+" gelöscht"); };
 }
 
+function renderFS(k){
+  const p=profile(k), sel=foerderOf(k).map(c=>c.name), auto=!Array.isArray(k.fs);
+  $("#fs-info").textContent=auto?"Automatisch vorgeschlagen: die schwächsten Bereiche unter 50 % (höchstens drei). Ein Klick ändert die Auswahl.":"Von dir ausgewählt.";
+  $("#f-fs").innerHTML=p.s.cats.map(c=>{ const on=sel.includes(c.name); return `<div class="fs-item ${on?"on":""}" style="--c:${c.color}">
+    <button class="tick ${on?"sel":""}" data-v="${esc(c.name)}" aria-pressed="${on}"><span class="bx">${CHECK}</span>${esc(c.name)} <span class="pc">${fmtP(c.pct)}</span></button>
+    ${on&&FOERDER_TEXT[c.name]?`<p>${esc(FOERDER_TEXT[c.name])}</p>`:""}</div>`; }).join("")+(auto?"":`<button class="btn quiet" data-auto="1">Vorschlag wiederherstellen</button>`);
+}
+
 /* ---------- Netzdiagramm ---------- */
 function radar(cats){
   const W=480,H=350,cx=W/2,cy=H/2+4,R=110,n=cats.length;
-  const ang=i=>-Math.PI/2+i*2*Math.PI/n, pt=(i,v)=>[cx+Math.cos(ang(i))*R*v/4,cy+Math.sin(ang(i))*R*v/4];
+  const ang=i=>-Math.PI/2+i*2*Math.PI/n, pt=(i,v)=>[cx+Math.cos(ang(i))*R*(v-1)/3,cy+Math.sin(ang(i))*R*(v-1)/3];
   let g="";
-  for(let lv=1;lv<=4;lv++) g+=`<polygon points="${cats.map((_,i)=>pt(i,lv).join(",")).join(" ")}" fill="none" stroke="${lv===4?"#9fb3c8":"#d6e0ea"}" stroke-width="${lv===4?1.1:.8}"/>`;
+  for(let lv=2;lv<=4;lv++) g+=`<polygon points="${cats.map((_,i)=>pt(i,lv).join(",")).join(" ")}" fill="none" stroke="${lv===4?"#9fb3c8":"#d6e0ea"}" stroke-width="${lv===4?1.1:.8}"/>`;
   cats.forEach((_,i)=>{ const [x,y]=pt(i,4); g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#d6e0ea" stroke-width=".8"/>`; });
-  for(let lv=1;lv<=4;lv++){ const [x,y]=pt(0,lv); g+=`<text x="${x+5}" y="${y+4}" font-size="9.5" fill="#7d8794">${lv}</text>`; }
-  const vals=cats.map(c=>c.mean==null?0:c.mean);
+  for(let lv=2;lv<=4;lv++){ const [x,y]=pt(0,lv); g+=`<text x="${x+5}" y="${y+4}" font-size="9" fill="#7d8794">${Math.round((lv-1)/3*100)} %</text>`; }
+  const vals=cats.map(c=>c.mean==null?1:c.mean);
   g+=`<polygon points="${vals.map((v,i)=>pt(i,v).join(",")).join(" ")}" fill="rgba(29,58,143,.13)" stroke="#1d3a8f" stroke-width="2.2" stroke-linejoin="round"/>`;
   vals.forEach((v,i)=>{ if(cats[i].mean!=null){ const [x,y]=pt(i,v); g+=`<circle cx="${x}" cy="${y}" r="5" fill="${cats[i].color}" stroke="#fff" stroke-width="1.6"/>`; } });
   cats.forEach((c,i)=>{ const a=ang(i),lx=cx+Math.cos(a)*(R+18),ly=cy+Math.sin(a)*(R+18);
@@ -507,19 +552,26 @@ function sheets(k,metaOverride){
   const rows=s.cats.map(c=>`<tr class="cat" style="--c:${c.color}"><td colspan="6"><span class="sw"></span>${esc(c.name)}</td></tr>
     ${c.items.map(it=>{ const v=k.answers[it.key]; return `<tr><td>${esc(it.text)}</td>${[1,2,3,4].map(n=>`<td class="c"><span class="dot ${v===n?"on":""}"></span></td>`).join("")}<td class="c">${v?"":'<span class="na">n. b.</span>'}</td></tr>`; }).join("")}`).join("");
   const page1=`<div class="sheet">${head("Ergebnisse der Beobachtung")}${info}
-    <table class="res"><colgroup><col><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:13mm"></colgroup>
-    <thead><tr><th class="q">Aussage</th>${sc.map(t=>`<th>${esc(t)}</th>`).join("")}<th></th></tr></thead><tbody>${rows}</tbody></table>${foot(1)}</div>`;
+    <table class="res"><colgroup><col><col style="width:14mm"><col style="width:14mm"><col style="width:14mm"><col style="width:14mm"><col style="width:7mm"></colgroup>
+    <thead><tr><th class="q">Beobachtungsfrage</th>${sc.map((t,i)=>`<th>${i+1}<br>${esc(shortScale(t))}</th>`).join("")}<th></th></tr></thead><tbody>${rows}</tbody></table>${foot(1)}</div>`;
+  const pr=profile(k);
   const chart=s.cats.length>=3?radar(s.cats):`<div class="scale-note">Für das Netzdiagramm braucht der Fragebogen mindestens drei Bereiche.</div>`;
-  const bars=s.cats.map(c=>`<div class="bar-row" style="--c:${c.color}"><div><div class="lb">${esc(c.name)}</div><div class="tr"><div class="fl" style="width:${c.mean==null?0:c.mean/4*100}%"></div></div></div><div class="vl">${fmt(c.mean)}</div></div>`).join("");
+  const bars=s.cats.map(c=>`<div class="bar-row" style="--c:${c.color}"><div><div class="lb">${esc(c.name)} <span>Ø ${fmt(c.mean)} von 4</span></div><div class="tr"><div class="fl" style="width:${c.pct||0}%"></div></div></div><div class="vl">${fmtP(c.pct)}</div></div>`).join("");
   const box=on=>`<span class="box">${on?CHECK:""}</span>`;
+  const chips=(list,empty)=>list.length?list.map(c=>`<span class="chip" style="--c:${c.color}">${esc(c.name)} <b>${c.pct} %</b></span>`).join(""):`<span class="leer">${empty}</span>`;
+  const fs=foerderOf(k);
   const page2=`<div class="sheet">${head("Auswertung und Empfehlung")}${info}
     <div class="p2-top"><div class="chart-box">${chart}</div><div>
-      <div class="gesamt"><b>${fmt(s.mean)}</b><span>Gesamtwert, ${level(s.mean)}<em>${s.answered} von ${s.total} Aussagen beurteilt</em></span></div>
-      <div class="bars">${bars}</div><div class="scale-note">Skala 1 bis 4: 1 ${esc(sc[0])}, 4 ${esc(sc[3])}</div></div></div>
+      <div class="gesamt"><b>${fmtP(s.pct)}</b><span>Mittelwert aller Bereiche<em>${s.answered} von ${s.total} Fragen beantwortet</em></span></div>
+      <div class="bars">${bars}</div></div></div>
+    <div class="se"><div><div class="sec-title">Stärken</div>${chips(pr.staerken,"Noch kein Bereich ab 67 %. Auch kleinere Fortschritte und einzelne positive Beobachtungen zählen.")}</div>
+      <div><div class="sec-title">Entwicklungsbereiche</div>${chips(pr.entwicklung,"Kein Bereich unter 50 %.")}</div></div>
     <div class="rec"><div class="q">Gymnasiale Empfehlung</div><div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
-    ${foerderList().length?`<div class="fs"><div class="sec-title">Förderschwerpunkte</div><div class="fs-grid">${foerderList().map(f=>{ const on=(k.foerder||[]).includes(f); return `<div class="opt ${on?"on":""}">${box(on)} ${esc(f)}</div>`; }).join("")}
-      ${k.foerderText?`<div class="fs-note"><small>Hinweise zur Förderung</small>${esc(k.foerderText)}</div>`:""}</div></div>`:""}
+    ${fs.length||k.foerderText?`<div class="fs"><div class="sec-title">Förderschwerpunkte und Empfehlungen</div><div class="fs-grid">
+      ${fs.map(c=>`<div class="fs-row" style="--c:${c.color}"><b>${esc(c.name)}</b><span>${esc(FOERDER_TEXT[c.name]||"")}</span></div>`).join("")}
+      ${k.foerderText?`<div class="fs-note"><small>Weitere Hinweise</small>${esc(k.foerderText)}</div>`:""}</div></div>`:""}
     <div class="sec-title">Bemerkung</div><div class="remark">${esc(k.bemerkung)}</div>
+    <div class="hinweis">Prozentwerte sind pädagogische Einschätzungen, keine normierten Testwerte. 0 % bedeutet durchgehend Stufe 1, 100 % durchgehend Stufe 4.</div>
     ${foot(2)}</div>`;
   return page1+page2;
 }
@@ -531,11 +583,10 @@ function makeDemo(){
     cats.forEach((c,ci)=>c.items.forEach(it=>{ const v=profile[ci%profile.length][i++%3]; if(v) k.answers[it.key]=v; }));
     Object.assign(k,{empfehlung:emp,bemerkung:bem,foerder:[],foerderText:""}); return k; };
   const list=[
-    mk("Mia Schneider",[[4,4,3],[4,3,4],[3,4,4],[4,3,3],[4,4,3],[3,3,4]],"ja","Mia arbeitet sehr zuverlässig und selbstständig. Sie erfasst neue Inhalte schnell und bringt sich mit durchdachten Beiträgen ein. Bei umfangreichen Aufgaben braucht sie gelegentlich Ermutigung, dranzubleiben."),
-    mk("Jonas Weber",[[3,2,3],[2,3,0],[3,2,2],[2,2,3],[4,3,4],[2,2,1]],"nein","Jonas ist ein hilfsbereiter Mitschüler und im Sozialverhalten ein Vorbild. Beim selbstständigen Arbeiten und bei der Organisation seiner Materialien braucht er noch Unterstützung. Seine Leistungen in Mathematik sind erfreulich."),
-    mk("Lea Yilmaz",[[3,3,4],[4,4,4],[4,3,4],[3,3,3],[3,4,3],[3,4,3]],"","")
+    mk("Mia S.",[[4,4,3],[4,3,4],[3,4,4],[4,3,3],[4,3,4],[4,4,3],[3,4,4],[4,4,3]],"ja","Mia arbeitet sehr zuverlässig und selbstständig. Sie erfasst neue Inhalte schnell und bringt sich mit durchdachten Beiträgen ein. Bei umfangreichen Aufgaben braucht sie gelegentlich Ermutigung, dranzubleiben."),
+    mk("Jonas W.",[[3,3,2],[2,2,1],[2,3,2],[2,2,3],[1,2,1],[3,2,3],[2,2,2],[2,1,2]],"nein","Jonas ist hilfsbereit und freut sich über gemeinsame Aufgaben. In Konfliktsituationen reagiert er noch schnell impulsiv. Kurze Arbeitsphasen mit klarer Struktur helfen ihm deutlich."),
+    mk("Lea Y.",[[3,3,4],[3,2,3],[3,3,3],[4,4,3],[3,4,3],[2,2,3],[3,3,4],[4,3,4]],"","")
   ];
-  const fl=foerderList(); if(fl.includes("Emotionale und soziale Entwicklung")){ list[1].foerder=["Lernen"].filter(x=>fl.includes(x)); list[1].foerderText="Zusätzliche Förderstunde im Lesen, Strukturierungshilfen bei Wochenplanarbeit."; }
   return list;
 }
 function loadDemo(){
@@ -570,17 +621,16 @@ $("#import-file").onchange=e=>{ const f=e.target.files[0]; if(!f) return; const 
 
 const modal=$("#modal");
 function openSettings(){ const m=state.meta; ["schule","schuljahr","klasse","lehrkraft"].forEach(f=>$("#m-"+f).value=m[f]||"");
-  $("#m-catalog").value=state.catalog; $("#m-scale").value=state.scale.join(" | "); $("#m-foerder").value=state.foerder; modal.classList.add("open"); $("#m-schule").focus(); }
+  $("#m-catalog").value=state.catalog; $("#m-scale").value=state.scale.join(" | "); modal.classList.add("open"); $("#m-schule").focus(); }
 $("#btn-settings").onclick=openSettings; $("#etikett").onclick=openSettings;
 $("#etikett").onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openSettings(); } };
 const close=()=>modal.classList.remove("open");
 $("#m-cancel").onclick=close; modal.onclick=e=>{ if(e.target===modal) close(); };
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") close(); });
-$("#m-reset").onclick=()=>{ $("#m-catalog").value=DEFAULT_CATALOG; $("#m-scale").value=DEFAULT_SCALE.join(" | "); $("#m-foerder").value=DEFAULT_FOERDER; };
+$("#m-reset").onclick=()=>{ $("#m-catalog").value=DEFAULT_CATALOG; $("#m-scale").value=DEFAULT_SCALE.join(" | "); };
 $("#m-save").onclick=()=>{
   ["schule","schuljahr","klasse","lehrkraft"].forEach(f=>state.meta[f]=$("#m-"+f).value.trim());
   const cat=$("#m-catalog").value; if(parseCatalog(cat).length) state.catalog=cat;
-  state.foerder=$("#m-foerder").value;
   const sc=$("#m-scale").value.split("|").map(x=>x.trim()).filter(Boolean);
   if(sc.length===4){ state.scale=sc; toast("Gespeichert"); } else toast("Gespeichert, aber die Stufen brauchen genau vier Einträge und bleiben unverändert");
   close(); save(); renderAll(); };
