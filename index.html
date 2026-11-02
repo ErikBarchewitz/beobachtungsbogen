@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beobachtungsbogen – Auswertung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1f2a30; --muted:#5f6d74; --line:#d7dfe2; --soft:#eef3f4; --paper:#fff;
+  --accent:#1f6f78; --accent-2:#e0eff0; --warm:#c46a2f; --bg:#f4f1ec;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15px;line-height:1.4}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+
+/* ---------- App shell ---------- */
+.topbar{display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(100deg,#16343a 0%,#1f6f78 120%);color:#fff;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.topbar h1{font-family:var(--serif);font-weight:500;font-size:20px;margin:0;letter-spacing:.2px;line-height:1.1}
+.topbar h1 small{display:block;font-family:var(--sans);font-size:12px;font-weight:400;opacity:.75;letter-spacing:.03em}
+.logo{width:34px;height:34px;flex:none}
+.topbar .sp{flex:1}
+.tb-btn{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:8px;padding:7px 12px}
+.tb-btn:hover{background:rgba(255,255,255,.1)}
+.tb-btn.primary{background:var(--warm);border-color:var(--warm)}
+.tb-btn.primary:hover{filter:brightness(1.08)}
+
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 58px)}
+aside{border-right:1px solid var(--line);background:#fbfaf7;padding:18px 14px;display:flex;flex-direction:column;gap:12px}
+aside h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:4px 6px}
+.kid-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;overflow:auto}
+.kid-list li{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer}
+.kid-list li:hover{background:var(--soft)}
+.kid-list li.active{background:var(--accent);color:#fff}
+.kid-list .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kid-list .badge{font-size:11px;padding:1px 7px;border-radius:99px;background:var(--soft);color:var(--muted)}
+.kid-list li.active .badge{background:rgba(255,255,255,.2);color:#fff}
+.kid-list .prog{font-size:11px;opacity:.75}
+.kid-list li{flex-wrap:wrap;row-gap:5px}
+.kid-list .pb{flex-basis:100%;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.kid-list .pb i{display:block;height:100%;background:var(--warm)}
+.kid-list li.active .pb{background:rgba(255,255,255,.25)}
+.kid-list li.active .pb i{background:#fff}
+.card{box-shadow:0 1px 2px rgba(31,42,48,.04)}
+.hero{max-width:760px;margin:30px auto;text-align:center}
+.hero h2{font-family:var(--serif);font-weight:500;font-size:34px;margin:0 0 10px;color:var(--ink)}
+.hero p.lead{font-size:17px;color:var(--muted);margin:0 auto 28px;max-width:560px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 28px;text-align:left}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--accent-2);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:10px}
+.step b{display:block;margin-bottom:4px}
+.step span{font-size:14px;color:var(--muted)}
+.hero .row-actions{justify-content:center}
+.btn.big{padding:12px 22px;font-size:16px;border-radius:10px}
+.privacy{margin-top:26px;font-size:13px;color:var(--muted);display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px}
+@media (max-width:820px){.steps{grid-template-columns:1fr}}
+.add-btn{border:1px dashed var(--accent);background:#fff;color:var(--accent);border-radius:8px;padding:9px;font-weight:600}
+.add-btn:hover{background:var(--accent-2)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.link-btn{background:none;border:none;color:var(--accent);text-align:left;padding:4px 6px}
+.link-btn:hover{text-decoration:underline}
+.hint{font-size:12px;color:var(--muted);padding:0 6px}
+
+main{padding:22px 28px 60px;max-width:1100px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.tab{background:none;border:none;padding:10px 16px;border-bottom:3px solid transparent;color:var(--muted);font-weight:600}
+.tab.on{color:var(--ink);border-bottom-color:var(--warm)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-family:var(--serif);font-weight:500;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+label.f input,label.f select,textarea{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff;color:var(--ink)}
+label.f input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-2);border-color:var(--accent)}
+textarea{width:100%;min-height:110px;resize:vertical}
+
+.cat-block{margin-top:6px}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--accent-2)}
+.cat-head h4{margin:0;font-size:15px;color:var(--accent)}
+.cat-head span{font-size:13px;color:var(--muted)}
+.q-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--soft)}
+.seg{display:flex;gap:4px}
+.seg button{width:38px;height:32px;border:1px solid var(--line);background:#fff;border-radius:7px;font-weight:600;color:var(--muted)}
+.seg button:hover{border-color:var(--accent)}
+.seg button.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.seg .clr{width:28px;border-style:dashed;font-weight:400}
+.legend-inline{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-bottom:4px}
+.legend-inline b{color:var(--ink)}
+.choice{display:flex;gap:8px}
+.choice button{flex:1;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:600}
+.choice button.sel.ja{background:#2f7d4f;border-color:#2f7d4f;color:#fff}
+.choice button.sel.nein{background:#9b3b2e;border-color:#9b3b2e;color:#fff}
+.choice button.sel.offen{background:var(--muted);border-color:var(--muted);color:#fff}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 14px}
+.btn:hover{border-color:var(--accent)}
+.btn.danger{color:#9b3b2e}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.empty h2{font-family:var(--serif);font-weight:500;color:var(--ink)}
+
+/* preview */
+.preview-wrap{display:flex;flex-direction:column;align-items:center;gap:24px}
+.preview-wrap .sheet{box-shadow:0 4px 22px rgba(0,0,0,.12)}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(20,28,32,.45);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:22px 24px}
+.modal h3{font-family:var(--serif);font-weight:500;margin:0 0 6px}
+.modal textarea{min-height:340px;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.modal .row-actions{justify-content:flex-end;margin-top:12px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:30}
+.toast.show{opacity:1}
+
+/* ---------- A4 sheets ---------- */
+.sheet{width:210mm;height:297mm;background:#fff;padding:14mm 15mm 12mm;position:relative;overflow:hidden;color:var(--ink);font-size:9.6pt;line-height:1.3;display:flex;flex-direction:column}
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.2pt solid var(--accent);padding-bottom:3mm;margin-bottom:4mm}
+.s-head .ttl{font-family:var(--serif);font-size:19pt;font-weight:650;line-height:1.05;color:var(--ink)}
+.s-head .sub{font-size:9pt;color:var(--muted);margin-top:1mm;text-transform:uppercase;letter-spacing:.09em}
+.s-head .sch{text-align:right;font-size:9pt;color:var(--muted)}
+.s-head .sch b{display:block;color:var(--ink);font-size:10.5pt}
+.info{display:grid;grid-template-columns:2.2fr 1fr 1fr 1.4fr;gap:0;border:1pt solid var(--line);border-radius:2.5mm;margin-bottom:4mm;overflow:hidden}
+.info div{padding:2mm 3mm;border-right:1pt solid var(--line)}
+.info div:last-child{border-right:none}
+.info small{display:block;font-size:7pt;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.info span{font-size:11pt;font-weight:600}
+.info .big span{font-family:var(--serif);font-size:13pt}
+
+table.res{width:100%;border-collapse:collapse;table-layout:fixed}
+table.res th{font-size:7pt;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;text-align:center;padding:1mm .5mm;vertical-align:bottom;line-height:1.1}
+table.res th.q{text-align:left}
+table.res td{padding:1.15mm 1.5mm;border-bottom:.6pt solid #e6ecee;vertical-align:middle}
+table.res td.c{text-align:center;padding:0}
+table.res tr.cat td{background:var(--accent-2);font-weight:700;color:var(--accent);border-bottom:none;padding:1.4mm 2mm;font-size:9.4pt}
+table.res tr.cat td.m{text-align:right;font-weight:600}
+table.res tr.gap td{border:none;height:1.6mm;padding:0}
+.dot{display:inline-block;width:3.4mm;height:3.4mm;border-radius:50%;border:.8pt solid #b9c6ca;vertical-align:middle}
+.dot.on{background:var(--accent);border-color:var(--accent)}
+.na{font-size:7.5pt;color:var(--muted);font-style:italic}
+.s-foot{margin-top:auto;padding-top:3mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:.6pt solid var(--line)}
+
+.p2-top{display:grid;grid-template-columns:96mm 1fr;gap:6mm;align-items:start;margin-bottom:5mm}
+.chart-box{border:1pt solid var(--line);border-radius:3mm;padding:3mm;display:flex;align-items:center;justify-content:center}
+.chart-box svg{width:100%;height:auto;display:block}
+.kpi{display:flex;gap:4mm;margin-bottom:4mm}
+.kpi div{flex:1;border-radius:2.5mm;padding:3mm;background:var(--soft)}
+.kpi small{display:block;font-size:7pt;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kpi b{font-family:var(--serif);font-size:20pt;font-weight:650;line-height:1.1}
+.kpi em{font-style:normal;font-size:8.5pt;color:var(--muted);display:block}
+.bars{display:flex;flex-direction:column;gap:2.2mm}
+.bar-row{display:grid;grid-template-columns:1fr 11mm;gap:2mm;align-items:center}
+.bar-row .lb{font-size:8.6pt;font-weight:600;margin-bottom:.6mm}
+.bar-row .tr{height:3.2mm;background:#edf1f2;border-radius:2mm;position:relative;overflow:hidden}
+.bar-row .fl{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:2mm}
+.bar-row .vl{text-align:right;font-weight:700;font-size:10pt}
+.scale-note{font-size:7.5pt;color:var(--muted);margin-top:2mm}
+
+.sec-title{font-family:var(--serif);font-weight:650;font-size:11.5pt;margin:0 0 2mm;color:var(--ink)}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);border:1pt solid var(--line);border-radius:2.5mm;overflow:hidden;margin-bottom:5mm}
+.grades div{padding:2.2mm 3mm;border-right:1pt solid var(--line);text-align:center}
+.grades div:last-child{border-right:none;background:var(--soft)}
+.grades small{display:block;font-size:7pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.grades b{font-size:14pt;font-family:var(--serif)}
+
+.rec{display:flex;align-items:center;gap:6mm;border:1.4pt solid var(--accent);border-radius:3mm;padding:3.5mm 5mm;margin-bottom:5mm}
+.rec .q{font-family:var(--serif);font-size:12.5pt;font-weight:650;flex:1}
+.rec .opt{display:flex;align-items:center;gap:2mm;font-size:11pt;font-weight:600}
+.box{width:5mm;height:5mm;border:1.2pt solid var(--ink);border-radius:1mm;display:inline-flex;align-items:center;justify-content:center;font-size:10pt;line-height:1}
+.box.on{background:var(--ink);color:#fff}
+
+.remark{border:1pt solid var(--line);border-radius:3mm;padding:3mm 4mm;flex:1;min-height:40mm;white-space:pre-wrap;font-size:10pt;line-height:7.5mm;background-origin:content-box;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 7.1mm,#dfe6e8 7.1mm,#dfe6e8 7.5mm)}
+.remark.empty{color:transparent}
+.sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8mm;margin-top:9mm}
+.sign div{border-top:.8pt solid var(--ink);padding-top:1.2mm;font-size:7.5pt;color:var(--muted)}
+
+#print-area{display:none}
+
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff}
+  .app,.modal-bg,.toast{display:none!important}
+  #print-area{display:block}
+  .sheet{box-shadow:none;page-break-after:always;break-after:page}
+  .sheet:last-child{page-break-after:auto;break-after:auto}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media (max-width:820px){.layout{grid-template-columns:1fr}aside{border-right:none;border-bottom:1px solid var(--line)}main{padding:16px}.preview-wrap{zoom:.45}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="rgba(255,255,255,.14)"/><polygon points="17,6 27,13 24,25 10,25 7,13" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/><polygon points="17,9 24,14.5 21.5,22 12,23 10,14" fill="#e9a26f" fill-opacity=".85"/></svg>
+    <h1>Beobachtungsbogen<small id="tb-sub">Auswertung &amp; Empfehlung</small></h1>
+    <div class="sp"></div>
+    <button class="tb-btn" id="btn-settings">Schule &amp; Fragebogen</button>
+    <button class="tb-btn" id="btn-print-one">Dieses Kind drucken</button>
+    <button class="tb-btn primary" id="btn-print-all">Alle drucken</button>
+  </div>
+  <div class="layout">
+    <aside>
+      <h2>Kinder</h2>
+      <ul class="kid-list" id="kid-list"></ul>
+      <button class="add-btn" id="btn-add">+ Kind hinzufügen</button>
+      <div class="side-foot">
+        <button class="link-btn" id="btn-export">Daten sichern (Datei)</button>
+        <button class="link-btn" id="btn-import">Daten laden (Datei)</button>
+        <button class="link-btn" id="btn-demo">Beispielklasse hinzufügen</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+        <p class="hint">Alles wird automatisch in diesem Browser gespeichert. Zur Sicherheit ab und zu „Daten sichern“.</p>
+      </div>
+    </aside>
+    <main id="main"></main>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3>Schule &amp; Fragebogen</h3>
+    <div class="grid" style="margin:12px 0 16px">
+      <label class="f">Schule<input id="m-schule"></label>
+      <label class="f">Schuljahr<input id="m-schuljahr"></label>
+      <label class="f">Klasse<input id="m-klasse"></label>
+      <label class="f">Lehrkraft<input id="m-lehrkraft"></label>
+    </div>
+    <p class="hint" style="padding:0;margin:0 0 6px">Fragebogen: Zeilen mit <b>#</b> sind Bereiche, alle anderen Zeilen sind Aussagen. Bereits erfasste Antworten bleiben erhalten, solange der Text gleich bleibt.</p>
+    <textarea id="m-catalog" spellcheck="false"></textarea>
+    <label class="f" style="margin-top:12px">Skala (4 Stufen, von schwach nach stark, mit | getrennt)<input id="m-scale"></label>
+    <div class="row-actions">
+      <button class="btn" id="m-reset">Standard-Fragebogen</button>
+      <button class="btn" id="m-cancel">Abbrechen</button>
+      <button class="btn primary" id="m-save">Übernehmen</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div id="print-area"></div>
+
+<script>
+(function(){
+const KEY = "beobachtungsbogen-auswertung-v1";
+const DEFAULT_CATALOG = `# Arbeitsverhalten
+Arbeitet konzentriert und ausdauernd
+Arbeitet selbstständig ohne ständige Hilfe
+Erledigt Aufgaben sorgfältig und genau
+Arbeitet in angemessenem Tempo
+Erledigt Hausaufgaben vollständig und zuverlässig
+# Lern- und Leistungsbereitschaft
+Zeigt Interesse und Neugier an neuen Inhalten
+Beteiligt sich aktiv am Unterricht
+Gibt auch bei Schwierigkeiten nicht auf
+Nimmt Hinweise an und setzt sie um
+# Auffassung und Denken
+Erfasst neue Inhalte schnell
+Denkt logisch und kann abstrahieren
+Überträgt Gelerntes auf neue Aufgaben
+Erkennt Zusammenhänge und begründet Lösungen
+# Sprache und Ausdruck
+Drückt sich mündlich klar und zusammenhängend aus
+Verfügt über einen differenzierten Wortschatz
+Liest sinnentnehmend und versteht Texte
+Verfasst Texte strukturiert und verständlich
+# Sozialverhalten
+Hält Regeln und Absprachen ein
+Arbeitet kooperativ mit anderen zusammen
+Geht respektvoll und hilfsbereit mit anderen um
+# Selbstorganisation
+Hält Arbeitsmaterial vollständig und in Ordnung
+Plant Arbeitsschritte und teilt sich die Zeit ein
+Übernimmt Verantwortung für das eigene Lernen`;
+const DEFAULT_SCALE = ["trifft nicht zu","trifft eher nicht zu","trifft eher zu","trifft voll zu"];
+
+let state = load() || {
+  meta:{schule:"",schuljahr:"",klasse:"",lehrkraft:""},
+  catalog:DEFAULT_CATALOG, scale:DEFAULT_SCALE.slice(), kids:[], current:null, tab:"form"
+};
+if(!state.scale || state.scale.length!==4) state.scale = DEFAULT_SCALE.slice();
+
+function load(){ try{ const s = localStorage.getItem(KEY); return s?JSON.parse(s):null; }catch(e){ return null; } }
+let saveT; function save(){ clearTimeout(saveT); saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} },200); }
+
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = ()=>Math.random().toString(36).slice(2,10);
+const fmt = n=>n==null||isNaN(n)?"–":n.toFixed(1).replace(".",",");
+const fmt2 = n=>n==null||isNaN(n)?"–":n.toFixed(2).replace(".",",");
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1800); }
+
+function parseCatalog(txt){
+  const cats=[]; let cur=null;
+  txt.split(/\r?\n/).forEach(l=>{
+    const line=l.trim(); if(!line) return;
+    if(line.startsWith("#")){ cur={name:line.replace(/^#+\s*/,"")||"Bereich",items:[]}; cats.push(cur); }
+    else { if(!cur){ cur={name:"Allgemein",items:[]}; cats.push(cur); } cur.items.push({text:line,key:cur.name+"|"+line}); }
+  });
+  return cats.filter(c=>c.items.length);
+}
+function stats(kid){
+  const cats=parseCatalog(state.catalog);
+  let all=[], answered=0, total=0;
+  const res=cats.map(c=>{
+    const v=c.items.map(i=>kid.answers[i.key]).filter(x=>x>=1&&x<=4);
+    total+=c.items.length; answered+=v.length; all=all.concat(v);
+    return {name:c.name, items:c.items, mean:v.length? v.reduce((a,b)=>a+b,0)/v.length : null};
+  });
+  return {cats:res, mean:all.length? all.reduce((a,b)=>a+b,0)/all.length:null, answered, total};
+}
+function level(m){ if(m==null) return "keine Angaben"; if(m>=3.5) return "sehr ausgeprägt"; if(m>=2.75) return "ausgeprägt"; if(m>=2) return "teilweise ausgeprägt"; return "wenig ausgeprägt"; }
+function gradeAvg(n){ const v=[n.de,n.ma,n.su].map(x=>parseFloat(String(x||"").replace(",","."))).filter(x=>!isNaN(x)); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; }
+function kid(){ return state.kids.find(k=>k.id===state.current); }
+function newKid(name){ return {id:uid(),name:name||"",datum:new Date().toISOString().slice(0,10),answers:{},noten:{de:"",ma:"",su:""},empfehlung:"",bemerkung:""}; }
+function dateDE(d){ if(!d) return ""; const p=d.split("-"); return p.length===3? `${p[2]}.${p[1]}.${p[0]}` : d; }
+
+/* ---------- sidebar ---------- */
+function renderList(){
+  const ul=$("#kid-list");
+  const sorted=state.kids.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"","de"));
+  ul.innerHTML = sorted.map(k=>{
+    const s=stats(k);
+    const b = k.empfehlung==="ja"?"Gym ✓":k.empfehlung==="nein"?"kein Gym":"";
+    return `<li data-id="${k.id}" class="${k.id===state.current?"active":""}">
+      <span class="nm">${esc(k.name||"(ohne Namen)")}</span>
+      <span class="prog">${s.answered}/${s.total}</span>${b?`<span class="badge">${b}</span>`:""}
+      <span class="pb"><i style="width:${s.total?Math.round(s.answered/s.total*100):0}%"></i></span></li>`;
+  }).join("") || `<li style="cursor:default;color:var(--muted)">Noch keine Kinder</li>`;
+  ul.querySelectorAll("li[data-id]").forEach(li=>li.onclick=()=>{ state.current=li.dataset.id; save(); renderAll(); });
+}
+
+/* ---------- main ---------- */
+function renderMain(){
+  const m=$("#main"); const k=kid();
+  if(!k){ m.innerHTML=`<div class="hero">
+    <h2>Beobachten. Auswerten. Drucken.</h2>
+    <p class="lead">Fülle für jedes Kind den Beobachtungsbogen aus und erhalte eine übersichtliche zweiseitige Auswertung mit Diagramm, Noten, Bemerkung und gymnasialer Empfehlung.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><b>Kinder anlegen</b><span>Links für jedes Kind einen Eintrag erstellen.</span></div>
+      <div class="step"><div class="n">2</div><b>Bogen ausfüllen</b><span>Pro Aussage eine Stufe von 1 bis 4 anklicken, dazu Noten und Bemerkung.</span></div>
+      <div class="step"><div class="n">3</div><b>Drucken</b><span>Zwei A4-Seiten pro Kind, einzeln oder für die ganze Klasse, auch als PDF.</span></div>
+    </div>
+    <div class="row-actions"><button class="btn primary big" id="e-add">+ Erstes Kind anlegen</button><button class="btn big" id="e-demo">Beispielklasse ansehen</button></div>
+    <div class="privacy">🔒 Alle Eingaben bleiben nur in diesem Browser – nichts wird ins Internet übertragen.</div></div>`;
+    $("#e-add").onclick=addKid; $("#e-demo").onclick=loadDemo; return; }
+  m.innerHTML = `<div class="tabs"><button class="tab ${state.tab!=="preview"?"on":""}" data-t="form">Fragebogen ausfüllen</button><button class="tab ${state.tab==="preview"?"on":""}" data-t="preview">Vorschau (2 Seiten)</button></div><div id="tab-body"></div>`;
+  m.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ state.tab=b.dataset.t; save(); renderMain(); });
+  state.tab==="preview"? renderPreview(k) : renderForm(k);
+}
+
+function renderForm(k){
+  const s=stats(k), sc=state.scale;
+  const body=$("#tab-body");
+  body.innerHTML = `
+  <div class="card"><h3>Angaben zum Kind</h3>
+    <div class="grid">
+      <label class="f" style="grid-column:span 2">Name des Kindes<input id="f-name" value="${esc(k.name)}" placeholder="Vorname Nachname"></label>
+      <label class="f">Datum<input type="date" id="f-datum" value="${esc(k.datum)}"></label>
+    </div></div>
+  <div class="card"><h3>Beobachtungen</h3>
+    <div class="legend-inline">${sc.map((t,i)=>`<span><b>${i+1}</b> = ${esc(t)}</span>`).join("")}<span><b>–</b> = nicht beurteilbar</span></div>
+    ${s.cats.map(c=>`<div class="cat-block"><div class="cat-head"><h4>${esc(c.name)}</h4><span>Ø ${fmt(c.mean)}</span></div>
+      ${c.items.map(it=>{ const v=k.answers[it.key]; return `<div class="q-row"><div>${esc(it.text)}</div><div class="seg" data-key="${esc(it.key)}">
+        ${[1,2,3,4].map(n=>`<button class="${v===n?"sel":""}" data-v="${n}" title="${esc(sc[n-1])}">${n}</button>`).join("")}
+        <button class="clr" data-v="0" title="nicht beurteilbar">–</button></div></div>`; }).join("")}</div>`).join("")}
+  </div>
+  <div class="card"><h3>Noten (optional)</h3>
+    <div class="grid">
+      <label class="f">Deutsch<input id="n-de" inputmode="decimal" value="${esc(k.noten.de)}"></label>
+      <label class="f">Mathematik<input id="n-ma" inputmode="decimal" value="${esc(k.noten.ma)}"></label>
+      <label class="f">Sachunterricht / HSU<input id="n-su" inputmode="decimal" value="${esc(k.noten.su)}"></label>
+      <label class="f">Durchschnitt<input id="n-avg" disabled value="${fmt2(gradeAvg(k.noten))}"></label>
+    </div></div>
+  <div class="card"><h3>Gymnasiale Empfehlung</h3>
+    <div class="choice" id="f-emp">
+      <button class="ja ${k.empfehlung==="ja"?"sel":""}" data-v="ja">Ja</button>
+      <button class="nein ${k.empfehlung==="nein"?"sel":""}" data-v="nein">Nein</button>
+      <button class="offen ${!k.empfehlung?"sel":""}" data-v="">noch offen</button>
+    </div></div>
+  <div class="card"><h3>Bemerkung</h3>
+    <textarea id="f-bem" placeholder="Stärken, Entwicklungsfelder, Hinweise für die weiterführende Schule …">${esc(k.bemerkung)}</textarea></div>
+  <div class="row-actions">
+    <button class="btn primary" id="f-preview">Zur Vorschau</button>
+    <button class="btn" id="f-dup">Als Vorlage für neues Kind kopieren</button>
+    <button class="btn danger" id="f-del">Kind löschen</button>
+  </div>`;
+
+  const bindVal=(id,fn)=>{ $(id).addEventListener("input",e=>{ fn(e.target.value); save(); renderList(); }); };
+  bindVal("#f-name",v=>k.name=v);
+  bindVal("#f-datum",v=>k.datum=v);
+  bindVal("#f-bem",v=>k.bemerkung=v);
+  ["de","ma","su"].forEach(f=>bindVal("#n-"+f,v=>{ k.noten[f]=v; $("#n-avg").value=fmt2(gradeAvg(k.noten)); }));
+  body.querySelectorAll(".seg").forEach(seg=>seg.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return; const key=seg.dataset.key; let v=+b.dataset.v;
+    if(v===0 || k.answers[key]===v) delete k.answers[key]; else k.answers[key]=v;
+    seg.querySelectorAll("button").forEach(x=>x.classList.toggle("sel", +x.dataset.v===k.answers[key]));
+    const cat=seg.closest(".cat-block"); const cs=stats(k).cats.find(c=>c.items.some(i=>i.key===key));
+    cat.querySelector(".cat-head span").textContent="Ø "+fmt(cs.mean);
+    save(); renderList();
+  }));
+  $("#f-emp").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; k.empfehlung=b.dataset.v;
+    $("#f-emp").querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); save(); renderList(); });
+  $("#f-preview").onclick=()=>{ state.tab="preview"; save(); renderMain(); window.scrollTo(0,0); };
+  $("#f-dup").onclick=()=>{ const n=newKid(""); n.answers=Object.assign({},k.answers); state.kids.push(n); state.current=n.id; save(); renderAll(); toast("Kopie angelegt – Namen eintragen"); };
+  let armed=false;
+  $("#f-del").onclick=e=>{ if(!armed){ armed=true; e.target.textContent="Wirklich löschen?"; setTimeout(()=>{armed=false; if(e.target.isConnected) e.target.textContent="Kind löschen";},3000); return; }
+    state.kids=state.kids.filter(x=>x.id!==k.id); state.current=state.kids[0]?state.kids[0].id:null; save(); renderAll(); toast("Gelöscht"); };
+}
+
+function renderPreview(k){ $("#tab-body").innerHTML=`<div class="preview-wrap">${sheets(k)}</div>`; }
+
+/* ---------- charts ---------- */
+function radar(cats){
+  const W=440,H=340,cx=W/2,cy=H/2+4,R=108,n=cats.length;
+  const ang=i=>-Math.PI/2+i*2*Math.PI/n;
+  const pt=(i,v)=>[cx+Math.cos(ang(i))*R*v/4, cy+Math.sin(ang(i))*R*v/4];
+  let g="";
+  for(let lv=1;lv<=4;lv++){ g+=`<polygon points="${cats.map((_,i)=>pt(i,lv).join(",")).join(" ")}" fill="${lv%2?"#f6f9f9":"#fff"}" stroke="#d7dfe2" stroke-width="${lv===4?1.2:.7}"/>`; }
+  cats.forEach((_,i)=>{ const [x,y]=pt(i,4); g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#d7dfe2" stroke-width=".7"/>`; });
+  for(let lv=1;lv<=4;lv++){ const [x,y]=pt(0,lv); g+=`<text x="${x+4}" y="${y+3}" font-size="9" fill="#8a979c">${lv}</text>`; }
+  const vals=cats.map(c=>c.mean==null?0:c.mean);
+  g+=`<polygon points="${vals.map((v,i)=>pt(i,v).join(",")).join(" ")}" fill="rgba(31,111,120,.22)" stroke="#1f6f78" stroke-width="2" stroke-linejoin="round"/>`;
+  vals.forEach((v,i)=>{ if(cats[i].mean!=null){ const [x,y]=pt(i,v); g+=`<circle cx="${x}" cy="${y}" r="3.6" fill="#1f6f78" stroke="#fff" stroke-width="1.4"/>`; }});
+  cats.forEach((c,i)=>{
+    const a=ang(i), lx=cx+Math.cos(a)*(R+16), ly=cy+Math.sin(a)*(R+16);
+    const anchor=Math.abs(Math.cos(a))<.25?"middle":(Math.cos(a)>0?"start":"end");
+    const words=wrap(c.name,14); const dy=Math.sin(a)<-.3? -(words.length-1)*11 : (Math.abs(Math.sin(a))<=.3? -(words.length-1)*5.5 : 4);
+    g+=`<text x="${lx}" y="${ly+dy}" text-anchor="${anchor}" font-size="10.5" font-weight="600" fill="#1f2a30" font-family="Source Sans 3, Segoe UI, Arial">${words.map((w,j)=>`<tspan x="${lx}" dy="${j?11:0}">${esc(w)}</tspan>`).join("")}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+function wrap(t,max){ const out=[]; let line=""; t.split(/\s+/).forEach(w=>{ if((line+" "+w).trim().length>max && line){ out.push(line); line=w; } else line=(line+" "+w).trim(); }); if(line) out.push(line); return out; }
+
+/* ---------- sheets ---------- */
+function sheets(k){
+  const s=stats(k), m=state.meta, sc=state.scale;
+  const head=(sub)=>`<div class="s-head"><div><div class="ttl">Beobachtungsbogen</div><div class="sub">${sub}</div></div>
+    <div class="sch"><b>${esc(m.schule||"")}</b>${m.schuljahr?"Schuljahr "+esc(m.schuljahr):""}</div></div>`;
+  const info=`<div class="info"><div class="big"><small>Name</small><span>${esc(k.name||"")}&nbsp;</span></div>
+    <div><small>Klasse</small><span>${esc(m.klasse||"")}&nbsp;</span></div>
+    <div><small>Datum</small><span>${esc(dateDE(k.datum))}&nbsp;</span></div>
+    <div><small>Lehrkraft</small><span>${esc(m.lehrkraft||"")}&nbsp;</span></div></div>`;
+  const foot=(p)=>`<div class="s-foot"><span>${esc(k.name||"")} · ${esc(m.klasse||"")}</span><span>Seite ${p} von 2</span></div>`;
+
+  const rows = s.cats.map((c,ci)=>`${ci?'<tr class="gap"><td colspan="6"></td></tr>':""}
+    <tr class="cat"><td colspan="5">${esc(c.name)}</td><td class="m">Ø ${fmt(c.mean)}</td></tr>
+    ${c.items.map(it=>{ const v=k.answers[it.key];
+      return `<tr><td>${esc(it.text)}</td>${[1,2,3,4].map(n=>`<td class="c"><span class="dot ${v===n?"on":""}"></span></td>`).join("")}<td class="c">${v?"":'<span class="na">n. b.</span>'}</td></tr>`; }).join("")}`).join("");
+
+  const page1=`<div class="sheet">${head("Ergebnisse der Beobachtung")}${info}
+    <table class="res"><colgroup><col><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:16mm"><col style="width:13mm"></colgroup>
+    <thead><tr><th class="q">Aussage</th>${sc.map(t=>`<th>${esc(t)}</th>`).join("")}<th></th></tr></thead><tbody>${rows}</tbody></table>
+    ${foot(1)}</div>`;
+
+  const ga=gradeAvg(k.noten);
+  const chart = s.cats.length>=3 ? radar(s.cats) : `<div class="scale-note">Für das Netzdiagramm werden mindestens drei Bereiche benötigt.</div>`;
+  const bars=s.cats.map(c=>`<div class="bar-row"><div><div class="lb">${esc(c.name)}</div><div class="tr"><div class="fl" style="width:${c.mean==null?0:(c.mean-0)/4*100}%"></div></div></div><div class="vl">${fmt(c.mean)}</div></div>`).join("");
+  const box=(on)=>`<span class="box ${on?"on":""}">${on?"✓":""}</span>`;
+  const page2=`<div class="sheet">${head("Auswertung &amp; Empfehlung")}${info}
+    <div class="p2-top"><div class="chart-box">${chart}</div>
+      <div><div class="kpi"><div><small>Gesamtwert</small><b>${fmt(s.mean)}</b><em>${level(s.mean)}</em></div>
+        <div><small>Beurteilt</small><b>${s.answered}<span style="font-size:11pt;color:var(--muted)">/${s.total}</span></b><em>Aussagen</em></div></div>
+        <div class="bars">${bars}</div>
+        <div class="scale-note">Skala 1–4: 1 = ${esc(sc[0])}, 4 = ${esc(sc[3])}</div></div></div>
+    <div class="sec-title">Noten</div>
+    <div class="grades"><div><small>Deutsch</small><b>${esc(k.noten.de)||"–"}</b></div><div><small>Mathematik</small><b>${esc(k.noten.ma)||"–"}</b></div>
+      <div><small>Sachunterricht / HSU</small><b>${esc(k.noten.su)||"–"}</b></div><div><small>Durchschnitt</small><b>${fmt2(ga)}</b></div></div>
+    <div class="rec"><div class="q">Gymnasiale Empfehlung</div>
+      <div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
+    <div class="sec-title">Bemerkung</div>
+    <div class="remark ${k.bemerkung?"":"empty"}">${esc(k.bemerkung)||"."}</div>
+    <div class="sign"><div>Ort, Datum</div><div>Unterschrift Lehrkraft</div><div>Unterschrift Erziehungsberechtigte</div></div>
+    ${foot(2)}</div>`;
+  return page1+page2;
+}
+
+/* ---------- actions ---------- */
+function addKid(){ const n=newKid(""); state.kids.push(n); state.current=n.id; state.tab="form"; save(); renderAll(); setTimeout(()=>{ const i=$("#f-name"); if(i) i.focus(); },30); }
+function doPrint(list){
+  if(!list.length){ toast("Keine Kinder zum Drucken"); return; }
+  $("#print-area").innerHTML=list.map(sheets).join("");
+  try{ window.print(); }catch(e){ toast("Drucken wird hier nicht unterstützt – Datei im Browser öffnen"); }
+}
+$("#btn-add").onclick=addKid;
+$("#btn-print-one").onclick=()=>{ const k=kid(); k? doPrint([k]) : toast("Bitte zuerst ein Kind auswählen"); };
+$("#btn-print-all").onclick=()=>doPrint(state.kids.slice().sort((a,b)=>(a.name||"").localeCompare(b.name||"","de")));
+window.addEventListener("afterprint",()=>{ $("#print-area").innerHTML=""; });
+
+$("#btn-export").onclick=()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`beobachtungsbogen_${(state.meta.klasse||"klasse").replace(/\W+/g,"-")}_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); toast("Sicherung gespeichert");
+};
+$("#btn-import").onclick=()=>$("#import-file").click();
+$("#import-file").onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); if(!d.kids) throw 0; state=Object.assign({tab:"form"},d); save(); renderAll(); toast(`${state.kids.length} Kinder geladen`); }catch(err){ toast("Datei konnte nicht gelesen werden"); } };
+  r.readAsText(f); e.target.value=""; };
+
+/* settings modal */
+const modal=$("#modal");
+$("#btn-settings").onclick=()=>{ const m=state.meta; $("#m-schule").value=m.schule||""; $("#m-schuljahr").value=m.schuljahr||""; $("#m-klasse").value=m.klasse||""; $("#m-lehrkraft").value=m.lehrkraft||""; $("#m-catalog").value=state.catalog; $("#m-scale").value=state.scale.join(" | "); modal.classList.add("open"); };
+$("#m-cancel").onclick=()=>modal.classList.remove("open");
+modal.onclick=e=>{ if(e.target===modal) modal.classList.remove("open"); };
+$("#m-reset").onclick=()=>{ $("#m-catalog").value=DEFAULT_CATALOG; $("#m-scale").value=DEFAULT_SCALE.join(" | "); };
+$("#m-save").onclick=()=>{
+  state.meta={schule:$("#m-schule").value.trim(),schuljahr:$("#m-schuljahr").value.trim(),klasse:$("#m-klasse").value.trim(),lehrkraft:$("#m-lehrkraft").value.trim()};
+  const cat=$("#m-catalog").value; if(parseCatalog(cat).length) state.catalog=cat;
+  const sc=$("#m-scale").value.split("|").map(x=>x.trim()).filter(Boolean); if(sc.length===4) state.scale=sc; else toast("Skala braucht genau 4 Stufen – unverändert");
+  modal.classList.remove("open"); save(); renderAll();
+};
+
+function loadDemo(){
+  const cats=parseCatalog(state.catalog);
+  const mk=(name,profile,noten,emp,bem)=>{ const k=newKid(name); let i=0;
+    cats.forEach((c,ci)=>c.items.forEach(it=>{ const v=profile[ci%profile.length][i++%3]; if(v) k.answers[it.key]=v; }));
+    k.noten=noten; k.empfehlung=emp; k.bemerkung=bem; return k; };
+  const demo=[
+    mk("Mia Schneider",[[4,4,3],[4,3,4],[3,4,4],[4,3,3],[4,4,3],[3,3,4]],{de:"2",ma:"1",su:"2"},"ja",
+      "Mia arbeitet sehr zuverlässig und selbstständig. Sie erfasst neue Inhalte schnell und bringt sich mit durchdachten Beiträgen ein. Bei umfangreichen Aufgaben braucht sie gelegentlich Ermutigung, dranzubleiben."),
+    mk("Jonas Weber",[[3,2,3],[2,3,0],[3,2,2],[2,2,3],[4,3,4],[2,2,1]],{de:"3",ma:"2",su:"3"},"nein",
+      "Jonas ist ein hilfsbereiter Mitschüler und im Sozialverhalten ein Vorbild. Beim selbstständigen Arbeiten und bei der Organisation seiner Materialien benötigt er noch Unterstützung. Seine Leistungen in Mathematik sind erfreulich."),
+    mk("Lea Yilmaz",[[3,3,4],[4,4,4],[4,3,4],[3,3,3],[3,4,3],[3,4,3]],{de:"2",ma:"2",su:"2"},"",
+      "")
+  ];
+  state.meta=Object.assign({schule:"Grundschule am Lindenpark",schuljahr:"2026/27",klasse:"4b",lehrkraft:"Frau Becker"},
+    Object.fromEntries(Object.entries(state.meta).filter(([_,v])=>v)));
+  state.kids=state.kids.concat(demo); state.current=demo[0].id; state.tab="preview"; save(); renderAll();
+  toast("Beispielklasse geladen – drei erfundene Kinder");
+}
+function renderAll(){ renderList(); renderMain();
+  const m=state.meta; $("#tb-sub").textContent=[m.schule,m.klasse&&("Klasse "+m.klasse),m.schuljahr].filter(Boolean).join(" · ")||"Auswertung & Empfehlung"; }
+$("#btn-demo").onclick=loadDemo;
+if(!state.current && state.kids[0]) state.current=state.kids[0].id;
+renderAll();
+})();
+</script>
+</body>
+</html>
