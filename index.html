@@ -469,7 +469,7 @@ function renderForm(k){
       <div class="wahl" data-key="${esc(it.key)}" role="radiogroup" aria-label="${esc(it.text)}">
       ${[1,2,3,4].map(n=>`<button class="${v===n?"sel":""}" data-v="${n}" title="${esc(sc[n-1])}" aria-pressed="${v===n}">${n}</button>`).join("")}
       <button class="nb ${v?"":"sel"}" data-v="0" title="nicht beobachtet">n. b.</button></div></div>`; }).join("")}</div></section>`).join("")}
-  <div class="zettel"><h3>Gymnasiale Empfehlung</h3><div class="empf" id="f-emp">
+  <div class="zettel"><h3>Vorläufige gymnasiale Empfehlung</h3><div class="empf" id="f-emp">
     <button class="tick ${k.empfehlung==="ja"?"sel":""}" data-v="ja"><span class="bx">${CHECK}</span>Ja</button>
     <button class="tick ${k.empfehlung==="nein"?"sel":""}" data-v="nein"><span class="bx">${CHECK}</span>Nein</button>
     <button class="btn quiet" data-v="">Auswahl entfernen</button></div></div>
@@ -566,7 +566,7 @@ function sheets(k,metaOverride){
       <div class="bars">${bars}</div></div></div>
     <div class="se"><div><div class="sec-title">Stärken</div>${chips(pr.staerken,"Noch kein Bereich ab 67 %. Auch kleinere Fortschritte und einzelne positive Beobachtungen zählen.")}</div>
       <div><div class="sec-title">Entwicklungsbereiche</div>${chips(pr.entwicklung,"Kein Bereich unter 50 %.")}</div></div>
-    <div class="rec"><div class="q">Gymnasiale Empfehlung</div><div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
+    <div class="rec"><div class="q">Vorläufige gymnasiale Empfehlung</div><div class="opt">${box(k.empfehlung==="ja")} Ja</div><div class="opt">${box(k.empfehlung==="nein")} Nein</div></div>
     ${fs.length||k.foerderText?`<div class="fs"><div class="sec-title">Förderschwerpunkte und Empfehlungen</div><div class="fs-grid">
       ${fs.map(c=>`<div class="fs-row" style="--c:${c.color}"><b>${esc(c.name)}</b><span>${esc(FOERDER_TEXT[c.name]||"")}</span></div>`).join("")}
       ${k.foerderText?`<div class="fs-note"><small>Weitere Hinweise</small>${esc(k.foerderText)}</div>`:""}</div></div>`:""}

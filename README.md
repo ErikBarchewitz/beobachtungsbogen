@@ -3,7 +3,7 @@
 Kleines Web-Werkzeug für Lehrkräfte: Pro Kind wird ein Beobachtungsbogen ausgefüllt. Daraus entsteht eine zweiseitige, druckfertige A4-Auswertung.
 
 - **Seite 1:** alle 40 Beobachtungsfragen aus acht Kompetenzbereichen mit der gewählten Stufe (1 Selten bis 4 Zuverlässig/selbstständig)
-- **Seite 2:** Netzdiagramm, Prozentwert pro Bereich, Stärken (ab 67 %), Entwicklungsbereiche (unter 50 %), gymnasiale Empfehlung (Ja/Nein), Förderschwerpunkte mit Empfehlungen, Bemerkung
+- **Seite 2:** Netzdiagramm, Prozentwert pro Bereich, Stärken (ab 67 %), Entwicklungsbereiche (unter 50 %), vorläufige gymnasiale Empfehlung (Ja/Nein), Förderschwerpunkte mit Empfehlungen, Bemerkung
 
 ## Datenschutz
 
